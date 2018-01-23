@@ -29,87 +29,87 @@ public class Lift {
 	
 	public void update(){
 		
-//		if(controller.getButton("ground") || controller.getButton("switch") || controller.getButton("scale") || controller.getButton("hang")){
-//			
-//			if(controller.getButton("ground")){
-//			
-//				if((LiftEnc1.get() + LiftEnc2.get()) == GROUND){
-//					Lift1.set(0);
-//					Lift2.set(0);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) > GROUND){
-//					Lift1.set(-1);
-//					Lift2.set(-1);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) < GROUND){
-//					Lift1.set(1);
-//					Lift2.set(1);
-//				}
-//			}
-//		
-//			if(controller.getButton("switch")){
-//			
-//				if((LiftEnc1.get() + LiftEnc2.get()) == SWITCH){
-//					Lift1.set(0);
-//					Lift2.set(0);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) > SWITCH){
-//					Lift1.set(-1);
-//					Lift2.set(-1);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) < SWITCH){
-//					Lift1.set(1);
-//					Lift2.set(1);
-//				}
-//			}
-//		
-//			if(controller.getButton("scale")){
-//			
-//				if((LiftEnc1.get() + LiftEnc2.get()) == SCALE){
-//					Lift1.set(0);
-//					Lift2.set(0);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) > SCALE){
-//					Lift1.set(-1);
-//					Lift2.set(-1);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) < SCALE){
-//					Lift1.set(1);
-//					Lift2.set(1);
-//				}
-//			}
-//		
-//			if(controller.getButton("hang")){
-//			
-//				if((LiftEnc1.get() + LiftEnc2.get()) == HANG){
-//					Lift1.set(0);
-//					Lift2.set(0);
-//				}
-//			
-//				else if((LiftEnc1.get() + LiftEnc2.get()) > HANG){
-//					Lift1.set(-1);
-//					Lift2.set(-1);
-//				}	
-//				
-//				else if((LiftEnc1.get() + LiftEnc2.get()) < HANG){
-//					Lift1.set(1);
-//					Lift2.set(1);
-//				}
-//			}
-//		}
-//		
-//		else
-		//{
+		if(controller.getButton("ground") || controller.getButton("switch") || controller.getButton("scale") || controller.getButton("hang")){
+			
+			if(controller.getButton("ground")){
+			
+				if((LiftEnc1.get() + LiftEnc2.get()) == GROUND){
+					Lift1.set(0);
+					Lift2.set(0);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) > GROUND){
+					Lift1.set(-1);
+					Lift2.set(-1);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) < GROUND){
+					Lift1.set(1);
+					Lift2.set(1);
+				}
+			}
+		
+			if(controller.getButton("switch")){
+			
+				if((LiftEnc1.get() + LiftEnc2.get()) == SWITCH){
+					Lift1.set(0);
+					Lift2.set(0);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) > SWITCH){
+					Lift1.set(-1);
+					Lift2.set(-1);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) < SWITCH){
+					Lift1.set(1);
+					Lift2.set(1);
+				}
+			}
+		
+			if(controller.getButton("scale")){
+			
+				if((LiftEnc1.get() + LiftEnc2.get()) == SCALE){
+					Lift1.set(0);
+					Lift2.set(0);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) > SCALE){
+					Lift1.set(-1);
+					Lift2.set(-1);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) < SCALE){
+					Lift1.set(1);
+					Lift2.set(1);
+				}
+			}
+		
+			if(controller.getButton("hang")){
+			
+				if((LiftEnc1.get() + LiftEnc2.get()) == HANG){
+					Lift1.set(0);
+					Lift2.set(0);
+				}
+			
+				else if((LiftEnc1.get() + LiftEnc2.get()) > HANG){
+					Lift1.set(-1);
+					Lift2.set(-1);
+				}	
+				
+				else if((LiftEnc1.get() + LiftEnc2.get()) < HANG){
+					Lift1.set(1);
+					Lift2.set(1);
+				}
+			}
+		}
+		
+		else
+		{
 		
 			Lift1.set(-1 * (controller.getAxis("manualLift") + (0.5 * controller.getAxis("precisionLift"))));
 			Lift2.set(controller.getAxis("manualLift") + (0.2 * controller.getAxis("precisionLift")));
-		//}
+		}
 		
 
 		

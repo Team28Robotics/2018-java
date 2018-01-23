@@ -12,7 +12,7 @@ public class PinConstants {
 	public static final int GRAB = 4, LIFT_1 = 5, LIFT_2 = 6;
 	
 	//DIO
-	public static final int LIFT_1_ENC_A = 1, LIFT_1_ENC_B = 2, LIFT_2_ENC_A = 3, LIFT_2_ENC_B = 4;
+	public static final int LIFT_1_ENC_A = 1, LIFT_1_ENC_B = 2, LIFT_2_ENC_A = 3, LIFT_2_ENC_B = 4, UP_LIM = 5, DOWN_LIM = 6; 
 	
 }
 

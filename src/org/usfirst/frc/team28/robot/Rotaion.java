@@ -23,6 +23,8 @@ public class Rotaion{
 	public double update(double turnRight){
 		SmartDashboard.putNumber("gyroAngle", gyro.getAngle());
 		
+		SmartDashboard.putNumber("Gyro", gyro.getAngle() % 360);
+		
 		if (turnRight == 0) {
 			
 			try{

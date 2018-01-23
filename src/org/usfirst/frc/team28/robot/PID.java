@@ -21,6 +21,7 @@ public class PID {
 		SmartDashboard.putNumber("kP", kP);
 		SmartDashboard.putNumber("kI", kI);
 		SmartDashboard.putNumber("kD", kD);
+		
 	}
 	
 	public double getSetpoint() {

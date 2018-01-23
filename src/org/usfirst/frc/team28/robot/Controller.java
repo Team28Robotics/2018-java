@@ -51,10 +51,6 @@ public class Controller {
 	
 	public double getAxis(String name)
 	{
-//		if(axisMap.get(name) < 0.05){
-//			return 0;
-//		}
-//		else
 		return axisMap.get(name);
 	}
 	

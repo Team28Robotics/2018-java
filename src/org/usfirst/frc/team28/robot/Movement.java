@@ -28,26 +28,36 @@ public class Movement {
  		double turnRight = rotaion.update(controller.getAxis("turnRight"));
  		double forward = controller.getAxis("forward");
  		double right = controller.getAxis("right");
-
-// 		double sped = 0.3;
-// 		
-// 		fR.set(ControlMode.PercentOutput, -1 * sped);
-// 		fL.set(ControlMode.PercentOutput, sped);
-//		bR.set(ControlMode.PercentOutput, -1 * sped); 
-// 		bL.set(ControlMode.PercentOutput, sped);
- 		
- 		// Negate right motors
  		double negate = -1;
  		
+ 		if (forward <= 0.05 && right <= 0.05)
+ 		{
+ 			forward = 0;
+ 			right = 0;
+ 		}
  		
  		
- 		 		
- 		fR.set(ControlMode.PercentOutput, negate * (-1 * (forward + right + turnRight)));
- 		fL.set(ControlMode.PercentOutput, negate * (forward - right - turnRight));
-		bR.set(ControlMode.PercentOutput, negate * (-1 * (forward - right + turnRight))); 
- 		bL.set(ControlMode.PercentOutput, negate * (forward + right - turnRight));
  		
  		
+ 		if(controller.getButton("slow"))
+ 		{
+ 			
+ 			fR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward + right + turnRight))));
+ 	 		fL.set(ControlMode.PercentOutput, SLOW * (negate * (forward - right - turnRight)));
+ 			bR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward - right + turnRight)))); 
+ 	 		bL.set(ControlMode.PercentOutput, SLOW * (negate * (forward + right - turnRight)));	
+ 			
+ 		}
+ 		
+ 		else
+ 		{
+ 		
+ 			fR.set(ControlMode.PercentOutput, negate * (-1 * (forward + right + turnRight)));
+ 			fL.set(ControlMode.PercentOutput, negate * (forward - right - turnRight));
+ 			bR.set(ControlMode.PercentOutput, negate * (-1 * (forward - right + turnRight))); 
+ 			bL.set(ControlMode.PercentOutput, negate * (forward + right - turnRight));
+ 		
+ 		}
  		
  		
  		
