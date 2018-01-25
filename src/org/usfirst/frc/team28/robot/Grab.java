@@ -17,7 +17,7 @@ public class Grab {
 	}
 	
 	public void update(){
-		
+		 
 		if(controller.getButton("grab")){
 			grab.set(1);
 		}

@@ -30,11 +30,7 @@ public class Movement {
  		double right = controller.getAxis("right");
  		double negate = -1;
  		
- 		if (forward <= 0.05 && right <= 0.05) //might work for controller deadzones
- 		{
- 			forward = 0;
- 			right = 0;
- 		}
+ 		
  		
  		
  		
