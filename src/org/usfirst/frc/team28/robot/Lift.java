@@ -8,35 +8,42 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Lift {
-
 	
 	private Spark Lift1 = new Spark(PinConstants.LIFT_1);
 	private Spark Lift2 = new Spark(PinConstants.LIFT_2);
+	
 	private Encoder LiftEnc1 = new Encoder(PinConstants.LIFT_1_ENC_A, PinConstants.LIFT_1_ENC_B);
 	private Encoder LiftEnc2 = new Encoder(PinConstants.LIFT_2_ENC_A, PinConstants.LIFT_2_ENC_B);
 	
 	private DigitalInput upLimit = new DigitalInput(PinConstants.UP_LIM);
 	private DigitalInput downLimit = new DigitalInput(PinConstants.DOWN_LIM);
 
-	
 	private final double GROUND = 1.0;
 	private final double SWITCH = 0.0;
 	private final double SCALE = 3.0;
 	private final double HANG = 0.0;
 	
 	private Controller controller;
-	
-	
+		
 	public Lift(Controller newController){
 		controller = newController;
 	}
-	
-	
+		
 	public void update(){
 		
-		
-			
-			
+		// sets lift motor to move up or down depending on which limit switch is activated
+		if(upLimit.get() == true)
+		{
+			Lift1.set(-1);
+		}
+		else if(downLimit.get() == true)
+		{
+			Lift1.set(1);
+		}
+		else
+		{
+				
+			// reads position and then sets position of the arm depending on the desired encoder value.
 			if(controller.getButton("ground") || controller.getButton("switch") || controller.getButton("scale") || controller.getButton("hang")){
 				
 				if(controller.getButton("ground")){
@@ -112,6 +119,7 @@ public class Lift {
 				}
 			}
 			
+			// sets the lift motor depending on joystick input
 			else
 			{
 			
@@ -119,7 +127,7 @@ public class Lift {
 				Lift2.set(controller.getAxis("manualLift") + (0.2 * controller.getAxis("precisionLift")));
 			}
 			
-		
+		}
 		
 
 		

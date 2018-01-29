@@ -10,6 +10,7 @@ package org.usfirst.frc.team28.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,14 +20,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
+	private static final String kLeft = "Left";
+	private static final String kMiddle  = "Middle";
+	private static final String kRight = "Right";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	
+	private String gameData = DriverStation.getInstance().getGameSpecificMessage();
+	
 	Movement movement;
 	Controller controller1;
 	Controller controller2;
 	Lift lift;
+	Auto auto;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -34,14 +40,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
-		m_chooser.addObject("My Auto", kCustomAuto);
+		m_chooser.addDefault("Left", kLeft);
+		m_chooser.addObject("Middle", kMiddle);
+		m_chooser.addObject("Right", kRight);
+
 		SmartDashboard.putData("Auto choices", m_chooser);
 		
 		controller1 = new Controller();
 		controller2 = new Controller();
 		movement = new Movement(controller1);
 		lift = new Lift(controller2);
+		auto = new Auto();
 		
 		
 		
@@ -73,14 +82,58 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
+			case kRight:
+				switch (gameData) {
+				case "LLL":
+					auto.R_LLL();
+					break;
+				case "LRL":
+					auto.R_LRL();
+					break;
+				case "RLR":
+					auto.R_RLR();
+					break;
+				case "RRR":
+					auto.R_RRR();
+					break;
+				}
+			break;
+			case kMiddle:
+				switch (gameData) {
+				case "LLL":
+					auto.M_LLL();
+					break;
+				case "LRL":
+					auto.M_LRL();
+					break;
+				case "RLR":
+					auto.M_RLR();
+					break;
+				case "RRR":
+					auto.M_RRR();
+					break;
+				}
 				break;
-			case kDefaultAuto:
+			case kLeft:
 			default:
-				// Put default auto code here
+				switch (gameData) {
+				case "LLL":
+					auto.L_LLL();
+					break;
+				case "LRL":
+					auto.L_LRL();
+					break;
+				case "RLR":
+					auto.L_RLR();
+					break;
+				case "RRR":
+					auto.L_RRR();
+					break;
+				}
 				break;
-		}
+			}
+			
+		
 	}
 
 	/**
