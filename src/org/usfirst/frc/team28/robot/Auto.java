@@ -17,24 +17,37 @@ public class Auto {
 	public void L_RRR()
 	{
 		fR.set(ControlMode.PercentOutput, -0.3);
-		fL.set(ControlMode.PercentOutput, 0.3);
-		bR.set(ControlMode.PercentOutput, -0.3); 
+		fL.set(ControlMode.PercentOutput, -0.3);
+		bR.set(ControlMode.PercentOutput, 0.3); 
 		bL.set(ControlMode.PercentOutput, 0.3);
+
 	}
 	
 	public void M_RRR()
 	{
-		
+		fL.set(ControlMode.PercentOutput, 0.3);
+
 	}
 	
 	public void R_RRR()
 	{
-		
+
+		bR.set(ControlMode.PercentOutput, -0.3); 
 	}
 	
 	public void L_LLL()
 	{
-		
+		//mecanum
+//		fR.set(ControlMode.PercentOutput, 0.3);
+//		fL.set(ControlMode.PercentOutput, -0.3);
+//		bR.set(ControlMode.PercentOutput, 0.3); 
+//		bL.set(ControlMode.PercentOutput, -0.3);
+	
+		//tank
+		fR.set(ControlMode.PercentOutput, 0.3);
+		fL.set(ControlMode.PercentOutput, 0.3);
+		bR.set(ControlMode.PercentOutput, -0.3); 
+		bL.set(ControlMode.PercentOutput, -0.3);
 	}
 	
 	public void M_LLL()
@@ -49,14 +62,24 @@ public class Auto {
 	
 	public void L_RLR()
 	{
-		fR.set(ControlMode.PercentOutput, 0.3);
-		fL.set(ControlMode.PercentOutput, -0.3);
-		bR.set(ControlMode.PercentOutput, 0.3); 
-		bL.set(ControlMode.PercentOutput, -0.3);
+		
 	}
 	
 	public void M_RLR()
 	{
+		//this works for mecanum drive (i think)
+		
+		/*fR.set(ControlMode.PercentOutput, -0.3);
+		fL.set(ControlMode.PercentOutput, 0.3);
+		bR.set(ControlMode.PercentOutput, -0.3); 
+		bL.set(ControlMode.PercentOutput, 0.3);*/
+		
+		//this works for tank drive
+		
+		fR.set(ControlMode.PercentOutput, -0.3);
+		fL.set(ControlMode.PercentOutput, -0.3);
+		bR.set(ControlMode.PercentOutput, 0.3); 
+		bL.set(ControlMode.PercentOutput, 0.3);
 		
 	}
 	
@@ -78,6 +101,14 @@ public class Auto {
 	public void R_LRL()
 	{
 		
+	}
+	
+	public void defaultAuto()
+	{
+		fR.set(ControlMode.PercentOutput, 0);
+		fL.set(ControlMode.PercentOutput, 0);
+		bR.set(ControlMode.PercentOutput, 0); 
+		bL.set(ControlMode.PercentOutput, 0);
 	}
 	
 	

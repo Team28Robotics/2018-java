@@ -23,7 +23,7 @@ public class Rotaion{
 	public double update(double turnRight){
 		SmartDashboard.putNumber("gyroAngle", gyro.getAngle());
 		
-		SmartDashboard.putNumber("Gyro", gyro.getAngle() % 360);
+		SmartDashboard.putNumber("Gyro", Math.abs(gyro.getAngle() % 360));
 		
 		if (turnRight == 0) {
 			
@@ -37,6 +37,7 @@ public class Rotaion{
 		} else {
 			return turnRight;
 		}
+		
 	}
 	
 	public static double DiffAngle(int current, int target){

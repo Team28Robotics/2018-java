@@ -26,6 +26,9 @@ public class Movement {
 	private TalonSRX fL = new TalonSRX(PinConstants.FL_MOTOR);
 	private TalonSRX fR = new TalonSRX(PinConstants.FR_MOTOR);
 	
+	
+
+	
 	// multiplier for slow mode
 	private final double SLOW = 0.5; 
 	
@@ -45,18 +48,18 @@ public class Movement {
  		double forward = controller.getAxis("forward");
  		double right = controller.getAxis("right");
  		 		
- 		// code for 
- 		double f = forward;
- 		
- 		if(f <= -0.9 && f >= -1)
- 		{
- 			forward = -1;
- 			right = 0;
- 		}
- 		
- 		 	SmartDashboard.putNumber("forward", forward);
- 		 	SmartDashboard.putNumber("right", right);
- 		 	SmartDashboard.putNumber("turn", turnRight);
+// 		 code for 
+// 		double f = forward;
+// 		
+// 		if(f <= -0.9 && f >= -1)
+// 		{
+// 			forward = -1;
+// 			right = 0;
+// 		}
+// 		
+// 		 	SmartDashboard.putNumber("forward", forward);
+// 		 	SmartDashboard.putNumber("right", right);
+// 		 	SmartDashboard.putNumber("turn", turnRight);
 
  		double negate = -1;
  		
@@ -64,69 +67,96 @@ public class Movement {
  		
  		m_chooser.addDefault("Mecanum Drive", kMecanumDrive);
 		m_chooser.addObject("Tank Drive", kTankDrive);
-		SmartDashboard.putData("Auto choices", m_chooser);
+		SmartDashboard.putData("Drive Choices", m_chooser);
  		
 		m_driveSelected = m_chooser.getSelected();
 		
 		switch (m_driveSelected) {
-		case kTankDrive:
+			case kTankDrive:
 			
-	 		if(controller.getButton("slow"))
-	 		{
+				double f = forward;
+		 		
+		 		if(f <= 0 && f >= -1)
+		 		{
+		 			forward = f;
+		 			right = 0;
+		 		}
+		 		
+		 		else if(f >= 0 && f <= 1)
+		 		{
+		 			forward = f;
+		 			right = 0;
+		 		}
+		 		
+		 		 	SmartDashboard.putNumber("forward", forward);
+		 		 	SmartDashboard.putNumber("right", right);
+		 		 	SmartDashboard.putNumber("turn", turnRight);
+
+				
+				
+				if(controller.getButton("slow"))
+				{
 	 			
-	 			fR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward + turnRight))));
-	 	 		fL.set(ControlMode.PercentOutput, SLOW * (negate * (forward - turnRight)));
-	 			bR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward + turnRight)))); 
-	 	 		bL.set(ControlMode.PercentOutput, SLOW * (negate * (forward - turnRight)));	
+					fR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (right + forward + turnRight))));
+					fL.set(ControlMode.PercentOutput, SLOW * (negate * (right - forward - turnRight)));
+					bR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (right - forward + turnRight)))); 
+					bL.set(ControlMode.PercentOutput, SLOW * (negate * (right + forward - turnRight)));	
 	 			
-	 		}
+				}
 	 		
-	 		else
-	 		{
+				else
+				{
 	 		
-	 			fR.set(ControlMode.PercentOutput, negate * (-1 * (forward + turnRight)));
-	 			fL.set(ControlMode.PercentOutput, negate * (forward - turnRight));
-	 			bR.set(ControlMode.PercentOutput, negate * (-1 * (forward + turnRight))); 
-	 			bL.set(ControlMode.PercentOutput, negate * (forward - turnRight));
+					fR.set(ControlMode.PercentOutput, negate * (-1 * (right + forward + turnRight)));
+					fL.set(ControlMode.PercentOutput, negate * (right - forward - turnRight));
+					bR.set(ControlMode.PercentOutput, negate * (-1 * (right - forward + turnRight))); 
+					bL.set(ControlMode.PercentOutput, negate * (right + forward - turnRight));
 	 		
-	 		}
+				}
+				
+				SmartDashboard.putNumber("front right speed", -1 * fR.getSensorCollection().getQuadratureVelocity());
+				SmartDashboard.putNumber("front left speed", fL.getSensorCollection().getQuadratureVelocity());
+				
+				
+				SmartDashboard.putNumber("back right speed", bR.getSensorCollection().getQuadratureVelocity());
+				SmartDashboard.putNumber("back left speed", bL.getSensorCollection().getQuadratureVelocity());
+				
+				
+				double difference = Math.abs(-1 * fR.getSensorCollection().getQuadratureVelocity() - fL.getSensorCollection().getQuadratureVelocity());
+				
+				
+				
+				SmartDashboard.putNumber("difference", difference);
+				
+
+				
+				break;
+			case kMecanumDrive:
+				
+			default:
+			
+				if(controller.getButton("slow"))
+				{
+	 			
+					fR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward + right + turnRight))));
+					fL.set(ControlMode.PercentOutput, SLOW * (negate * (forward - right - turnRight)));
+					bR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward - right + turnRight)))); 
+					bL.set(ControlMode.PercentOutput, SLOW * (negate * (forward + right - turnRight)));	
+	 			
+				}
+	 		
+				else
+				{
+	 		
+					fR.set(ControlMode.PercentOutput, negate * (-1 * (forward + right + turnRight)));
+					fL.set(ControlMode.PercentOutput, negate * (forward - right - turnRight));
+					bR.set(ControlMode.PercentOutput, negate * (-1 * (forward - right + turnRight))); 
+					bL.set(ControlMode.PercentOutput, negate * (forward + right - turnRight));
+	 		
+				}
  
+
 			
-			break;
-		case kMecanumDrive:
-		default:
-			
-	 		if(controller.getButton("slow"))
-	 		{
-	 			
-	 			fR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward + right + turnRight))));
-	 	 		fL.set(ControlMode.PercentOutput, SLOW * (negate * (forward - right - turnRight)));
-	 			bR.set(ControlMode.PercentOutput, SLOW * (negate * (-1 * (forward - right + turnRight)))); 
-	 	 		bL.set(ControlMode.PercentOutput, SLOW * (negate * (forward + right - turnRight)));	
-	 			
-	 		}
-	 		
-	 		else
-	 		{
-	 		
-	 			fR.set(ControlMode.PercentOutput, negate * (-1 * (forward + right + turnRight)));
-	 			fL.set(ControlMode.PercentOutput, negate * (forward - right - turnRight));
-	 			bR.set(ControlMode.PercentOutput, negate * (-1 * (forward - right + turnRight))); 
-	 			bL.set(ControlMode.PercentOutput, negate * (forward + right - turnRight));
-	 		
-	 		}
- 
-	 		SmartDashboard.putNumber("front right speed", -1 * fR.getSensorCollection().getQuadratureVelocity());
-			SmartDashboard.putNumber("front left speed", fL.getSensorCollection().getQuadratureVelocity());
-			
-			double difference = Math.abs(-1 * fR.getSensorCollection().getQuadratureVelocity() - fL.getSensorCollection().getQuadratureVelocity());
-			
-			
-			
-			SmartDashboard.putNumber("difference", difference);
-			
-			SmartDashboard.putNumber("back right speed", bR.getSensorCollection().getQuadratureVelocity());
-			SmartDashboard.putNumber("back left speed", bL.getSensorCollection().getQuadratureVelocity());
 
 			
 			break;

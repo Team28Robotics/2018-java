@@ -74,6 +74,10 @@ public class Robot extends IterativeRobot {
 		// autoS elected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		SmartDashboard.putString("Game Data", gameData);
+		SmartDashboard.putString("Position", m_autoSelected);
 	}
 
 	/**
@@ -81,8 +85,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
+		
+
+		auto.defaultAuto();
+		
 		switch (m_autoSelected) {
+			
 			case kRight:
+				
 				switch (gameData) {
 				case "LLL":
 					auto.R_LLL();
@@ -98,6 +109,7 @@ public class Robot extends IterativeRobot {
 					break;
 				}
 			break;
+			
 			case kMiddle:
 				switch (gameData) {
 				case "LLL":
@@ -114,8 +126,8 @@ public class Robot extends IterativeRobot {
 					break;
 				}
 				break;
+			
 			case kLeft:
-			default:
 				switch (gameData) {
 				case "LLL":
 					auto.L_LLL();
@@ -131,6 +143,8 @@ public class Robot extends IterativeRobot {
 					break;
 				}
 				break;
+				
+			
 			}
 			
 		
@@ -144,7 +158,7 @@ public class Robot extends IterativeRobot {
 		controller1.update();
 		controller2.update();
 		movement.update();
-		lift.update();
+		lift.update(); 
 	
 	}
 
