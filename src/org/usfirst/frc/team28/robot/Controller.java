@@ -43,8 +43,8 @@ public class Controller {
 		axisMap.put("out", Controller2.getTriggerAxis(GenericHID.Hand.kLeft));
 		
 		
-		buttonMap.put("extend", Controller2.getBumper(GenericHID.Hand.kRight));
-		buttonMap.put("retract", Controller2.getBumper(GenericHID.Hand.kLeft));
+		buttonMap.put("retract", Controller2.getBumper(GenericHID.Hand.kRight));
+		buttonMap.put("extend", Controller2.getBumper(GenericHID.Hand.kLeft));
 		
 		buttonMap.put("grab", Controller2.getAButton());
 		buttonMap.put("drop", Controller2.getBButton());
