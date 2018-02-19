@@ -8,22 +8,62 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Grab {
 
-	private Spark grab = new Spark(PinConstants.GRAB);
+//	public static Spark claw = new Spark(PinConstants.CLAW);
+//	public static Spark intake = new Spark(PinConstants.INTAKE);
 	
-	private Controller controller;
 	
-	public Grab(Controller newController){
-		controller = newController;
+	
+//	private Controller controller;
+	
+	private Input input;
+	
+	public Grab(Input newInput){
+		input = newInput;
 	}
 	
 	public void update(){
 		 
-		if(controller.getButton("grab")){
-			grab.set(1);
-		}
+		input.setClaw(input.getClaw());
 		
-		else
-			grab.set(-1);
+		
+		input.setIntake(input.getIntake());
+		
+				
+//		intake.set(controller.getAxis("intake"));
+//			
+//		if(controller.getButton("intake"))
+//		{
+//			intake.set(1);
+//		}
+//		else if(controller.getButton("out"))
+//		{
+//			intake.set(-1);
+//		}
+//		
+//		
+//		if (controller.getButton("grab"))
+//		{
+//			
+//			claw.set(-1);
+//			
+//			
+//			
+//		}
+//		else if (controller.getButton("drop"))
+//		{
+//			
+//			claw.set(1);
+//			intake.set(0);
+//			
+//		}
+//		else
+//		{
+//			claw.set(0);
+//			intake.set(0);
+//		}
+//		
+//		SmartDashboard.putNumber("Out Volt", intake.getSpeed());
+		
 	}
 }
 

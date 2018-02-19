@@ -10,6 +10,9 @@ package org.usfirst.frc.team28.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.io.*;
+
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -23,16 +26,33 @@ public class Robot extends IterativeRobot {
 	private static final String kLeft = "Left";
 	private static final String kMiddle  = "Middle";
 	private static final String kRight = "Right";
+	private static final String kCross = "Cross";
+	private static final String kDefault = "Default";
+	private static final String kExperimental = "Experimental";
+
+	private String autoMode;
+	private SendableChooser<String> mode = new SendableChooser<>();
+	
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
 	private String gameData = DriverStation.getInstance().getGameSpecificMessage();
 	
+	boolean isRecording = false;
+	
+	static final int autoNumber = 10;
+	
+	static final String autoFile = new String("/home/lvuser/AutoFiles" + autoNumber + ".csv");
+	
+	AutoPlay player;
+	AutoRecord recorder;
+	Input input;
 	Movement movement;
 	Controller controller1;
 	Controller controller2;
 	Lift lift;
 	Auto auto;
+	Grab grab;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -40,17 +60,26 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Left", kLeft);
+		m_chooser.addDefault("Cross", kCross);
+		m_chooser.addObject("Left", kLeft);
 		m_chooser.addObject("Middle", kMiddle);
 		m_chooser.addObject("Right", kRight);
 
 		SmartDashboard.putData("Auto choices", m_chooser);
 		
+		mode.addDefault("Default", kDefault);
+		mode.addObject("Experimental", kExperimental);
+		
+		SmartDashboard.putData("Auto Modes", mode);
+		
+		
 		controller1 = new Controller();
 		controller2 = new Controller();
-		movement = new Movement(controller1);
-		lift = new Lift(controller2);
+		input = new Input(controller1, controller2);
+		movement = new Movement(input);
+		lift = new Lift(input);
 		auto = new Auto();
+		grab = new Grab(input);
 		
 		
 		
@@ -70,14 +99,37 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		
+		
+		
+		
 		m_autoSelected = m_chooser.getSelected();
 		// autoS elected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
+		
+		autoMode = mode.getSelected();
+		System.out.println("Auto mode: " + mode);
+		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
 		SmartDashboard.putString("Game Data", gameData);
 		SmartDashboard.putString("Position", m_autoSelected);
+		
+		
+    	player = null;
+    	
+    	
+    	try 
+    	{
+    		 player = new AutoPlay();
+		} 
+    	
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -86,7 +138,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		
-		
+	switch (autoMode){
+	
+	case kDefault:
 
 		auto.defaultAuto();
 		
@@ -144,10 +198,66 @@ public class Robot extends IterativeRobot {
 				}
 				break;
 				
+			case kCross:
+				auto.cross();
+				break;
+				
 			
 			}
+		break;
+	
+	case kExperimental:
+		
+		if (player != null)
+		{
+			player.test(input);
+			player.play(input);
+		}
+		
+		if (recorder == null)
+		{
+			System.out.print("PLAYERISNULL");
+		}
+		
+		
+	}
 			
 		
+	}
+	
+	/**
+	 * This function is called periodically during test mode.
+	 */
+	@Override
+	public void teleopInit() {
+		
+		if(player != null)
+		{
+			player.end(input);
+		}
+		
+		AutoRecord recorder = null;
+        try {
+			recorder = new AutoRecord();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+        
+        try 
+    	{
+    		if(recorder != null)
+    		{
+    			recorder.end();
+    		}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+
 	}
 
 	/**
@@ -155,11 +265,47 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		
 		controller1.update();
 		controller2.update();
 		movement.update();
-		lift.update(); 
-	
+		lift.update();
+		grab.update();
+		
+		
+		if (controller1.getButton("record"))
+		{
+			isRecording = !isRecording;
+		}  
+
+		if (isRecording)
+		{
+			try
+			{
+				
+				if(recorder != null)
+				{
+					System.out.println(input.getLift1());
+					recorder.record(input);
+				}
+			
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		if (recorder == null)
+		{
+			System.out.print("RECORDERNULL!");
+		}
+		    	
+		
+    	
 	}
 
 	/**
@@ -167,5 +313,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+	}
+	
+	/**
+	 * This function is called periodically during disabled mode.
+	 */
+	@Override
+	public void disabledInit() {
+		
+		if(player!= null)
+		{
+			player.end(input);
+		}
+		
+		
+	
+		
+		
 	}
 }

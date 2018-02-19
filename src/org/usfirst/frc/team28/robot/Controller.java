@@ -28,20 +28,35 @@ public class Controller {
 		axisMap.put("forward", Controller1.getY(GenericHID.Hand.kLeft)); 
 		axisMap.put("right", Controller1.getX(GenericHID.Hand.kLeft));
 		axisMap.put("turnRight", Controller1.getTriggerAxis(GenericHID.Hand.kRight) - (Controller1.getTriggerAxis(GenericHID.Hand.kLeft)));
-		buttonMap.put("grab", Controller1.getAButton());
-		buttonMap.put("drop", Controller1.getBButton());
+		
+		
 		buttonMap.put("slow", Controller1.getBumper(GenericHID.Hand.kRight));
+		buttonMap.put("record", Controller1.getBumper(GenericHID.Hand.kLeft));
 
 
 
 		
-		axisMap.put("manualLift", Controller2.getY(GenericHID.Hand.kRight));
-		axisMap.put("precisionLift", Controller2.getY(GenericHID.Hand.kLeft));
-
-		buttonMap.put("ground", Controller2.getAButton());
-		buttonMap.put("switch", Controller2.getBButton());
-		buttonMap.put("scale", Controller2.getYButton());
-		buttonMap.put("hang", Controller2.getXButton());
+		axisMap.put("Lift1", Controller2.getY(GenericHID.Hand.kLeft));
+		axisMap.put("Lift2", Controller2.getY(GenericHID.Hand.kRight));
+		
+		axisMap.put("intake", Controller2.getTriggerAxis(GenericHID.Hand.kRight));
+		axisMap.put("out", Controller2.getTriggerAxis(GenericHID.Hand.kLeft));
+		
+		
+		buttonMap.put("extend", Controller2.getBumper(GenericHID.Hand.kRight));
+		buttonMap.put("retract", Controller2.getBumper(GenericHID.Hand.kLeft));
+		
+		buttonMap.put("grab", Controller2.getAButton());
+		buttonMap.put("drop", Controller2.getBButton());
+		
+		//moves the tower forwards and backwards
+//		buttonMap.put("front", Controller2.getXButton());
+//		buttonMap.put("back", Controller2.getYButton());
+		
+//		buttonMap.put("ground", Controller2.getAButton());
+//		buttonMap.put("switch", Controller2.getBButton());
+//		buttonMap.put("scale", Controller2.getYButton());
+//		buttonMap.put("hang", Controller2.getXButton());
 		
 		
 

@@ -103,6 +103,14 @@ public class Auto {
 		
 	}
 	
+	public void cross()
+	{
+		fR.set(ControlMode.PercentOutput, 0.25);
+		fL.set(ControlMode.PercentOutput, -0.25);
+		bR.set(ControlMode.PercentOutput, -0.25); 
+		bL.set(ControlMode.PercentOutput,  0.25);
+	}
+	
 	public void defaultAuto()
 	{
 		fR.set(ControlMode.PercentOutput, 0);

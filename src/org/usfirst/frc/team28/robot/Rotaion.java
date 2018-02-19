@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Rotaion{
-	AnalogGyro gyro;
-	double header;
-	PID pid;
+	private AnalogGyro gyro;
+	private double header;
+	private PID pid;
 	
 	
 	public Rotaion(int channel){
