@@ -21,7 +21,7 @@ public class AutoPlay {
 		startTime = System.currentTimeMillis();	
 	}
 	
-	public void play(Input input)
+	public void play(Movement move, Lift lift, Grab grab)
 	{
 		if ((scanner != null) && (scanner.hasNextDouble()))
 		{
@@ -37,16 +37,16 @@ public class AutoPlay {
 			if (t_delta <= 0)
 			{
 				
-				input.setFrontLeft(scanner.nextDouble());
-				input.setFrontRight(scanner.nextDouble());
-				input.setBackLeft(scanner.nextDouble());
-				input.setBackRight(scanner.nextDouble());
+				move.setFrontLeft(scanner.nextDouble());
+				move.setFrontRight(scanner.nextDouble());
+				move.setBackLeft(scanner.nextDouble());
+				move.setBackRight(scanner.nextDouble());
 				
-				input.setLift1(scanner.nextDouble());
-				input.setLift2(scanner.nextDouble());
+				lift.setLift1(scanner.nextDouble());
+				lift.setLift2(scanner.nextDouble());
 
-				input.setIntake(scanner.nextDouble());
-				input.setClaw(scanner.nextDouble());
+				grab.setIntake(scanner.nextDouble());
+				grab.setClaw(scanner.nextDouble());
 				
 				onTime = true;
 			}
@@ -59,7 +59,7 @@ public class AutoPlay {
 		
 		else
 		{
-			this.end(input);
+			this.end(move, lift, grab);
 			if (scanner != null) 
 			{
 				scanner.close();
@@ -69,19 +69,19 @@ public class AutoPlay {
 		
 	}
 	
-	public void end(Input input)
+	public void end(Movement move, Lift lift, Grab grab)
 	{
 		
-		input.setFrontLeft(0);
-		input.setFrontRight(0);
-		input.setBackLeft(0);
-		input.setBackRight(0);
+		move.setFrontLeft(0);
+		move.setFrontRight(0);
+		move.setBackLeft(0);
+		move.setBackRight(0);
 		
-		input.setLift1(0);
-		input.setLift2(0);
+		lift.setLift1(0);
+		lift.setLift2(0);
 
-		input.setIntake(0);		
-		input.setClaw(0);
+		grab.setIntake(0);		
+		grab.setClaw(0);
 		
 		if (scanner != null)
 		{
@@ -90,8 +90,4 @@ public class AutoPlay {
 		
 	}
 	
-	public double test(Input input)
-	{
-		return input.getLift1();
-	}
 }

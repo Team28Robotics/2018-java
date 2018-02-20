@@ -7,62 +7,57 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Grab {
-
-//	public static Spark claw = new Spark(PinConstants.CLAW);
-//	public static Spark intake = new Spark(PinConstants.INTAKE);
 	
-	
-	
-//	private Controller controller;
-	
-	private Input input;
-	
-	public Grab(Input newInput){
-		input = newInput;
+	private Spark claw = new Spark(PinConstants.CLAW);
+	private Spark intake1 = new Spark(PinConstants.INTAKE_1);
+	private Spark intake2 = new Spark(PinConstants.INTAKE_2);
+	private Controller controller;
+		
+	public Grab(Controller newController){
+		controller = newController;
 	}
+	
+	public double getClaw()
+	{
+		if (controller.getButton("grab"))
+		{	
+			return -1;	
+		}
+		
+		else if (controller.getButton("drop"))
+		{
+			return 1;
+		}
+		
+		else
+			return 0;
+	}
+	
+	public void setClaw(double x)
+	{
+		claw.set(x);
+	}
+	
+	public double getIntake()
+	{		
+		return  controller.getAxis("intake") - controller.getAxis("out");
+	}
+	
+	public void setIntake(double x)
+	{
+		intake1.set(x);
+		intake2.set(x);
+		
+	}
+	
 	
 	public void update(){
 		 
-		input.setClaw(input.getClaw());
-		
-		
-		input.setIntake(input.getIntake());
+		this.setClaw(this.getClaw());
+		this.setIntake(this.getIntake());
 		
 				
-//		intake.set(controller.getAxis("intake"));
-//			
-//		if(controller.getButton("intake"))
-//		{
-//			intake.set(1);
-//		}
-//		else if(controller.getButton("out"))
-//		{
-//			intake.set(-1);
-//		}
-//		
-//		
-//		if (controller.getButton("grab"))
-//		{
-//			
-//			claw.set(-1);
-//			
-//			
-//			
-//		}
-//		else if (controller.getButton("drop"))
-//		{
-//			
-//			claw.set(1);
-//			intake.set(0);
-//			
-//		}
-//		else
-//		{
-//			claw.set(0);
-//			intake.set(0);
-//		}
-//		
-//		SmartDashboard.putNumber("Out Volt", intake.getSpeed());
+
 		
 	}
 }

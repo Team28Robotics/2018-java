@@ -10,7 +10,7 @@ package org.usfirst.frc.team28.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.CameraServer;
 import java.io.*;
 
 import edu.wpi.first.wpilibj.*;
@@ -53,6 +53,7 @@ public class Robot extends IterativeRobot {
 	Lift lift;
 	Auto auto;
 	Grab grab;
+	CameraServer cam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -60,6 +61,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		System.out.println("Robot Initializing...");
+		
 		m_chooser.addDefault("Cross", kCross);
 		m_chooser.addObject("Left", kLeft);
 		m_chooser.addObject("Middle", kMiddle);
@@ -72,16 +75,32 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Auto Modes", mode);
 		
+		System.out.println("Initializing Camera...");
+		CameraServer.getInstance().startAutomaticCapture();
 		
+		System.out.println("Camera Initialized");
+		
+		System.out.println("Initializing Objects...");
+		
+		System.out.println("Initializing Controllers...");
 		controller1 = new Controller();
 		controller2 = new Controller();
-		input = new Input(controller1, controller2);
-		movement = new Movement(input);
-		lift = new Lift(input);
+		System.out.println("Controllers Initialized");
+		
+		System.out.println("Initializing Drive Code...");
+		movement = new Movement(controller1);
+		System.out.println("Done.");
+
+		System.out.println("Initializing Lift Code...");
+		lift = new Lift(controller2);
+		System.out.println("Done.");
+		
+		System.out.println("Initializing Grab Code...");
+		grab = new Grab(controller2);
+		System.out.println("Done.");
+		
 		auto = new Auto();
-		grab = new Grab(input);
-		
-		
+		System.out.println("Robot Initialization Complete");
 		
 		
 	}
@@ -100,7 +119,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		
-		
+		System.out.println("Autonomous Initializing...");	
 		
 		
 		
@@ -117,19 +136,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Game Data", gameData);
 		SmartDashboard.putString("Position", m_autoSelected);
 		
-		
-    	player = null;
+		System.out.println("Autonomous Initializion Complete");
     	
-    	
-    	try 
-    	{
-    		 player = new AutoPlay();
-		} 
-    	
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -208,13 +216,25 @@ public class Robot extends IterativeRobot {
 	
 	case kExperimental:
 		
+		player = null;
+    	
+    	
+    	try 
+    	{
+    		 player = new AutoPlay();
+		} 
+    	
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+    	
 		if (player != null)
 		{
-			player.test(input);
-			player.play(input);
+			player.play(movement, lift, grab);
 		}
 		
-		if (recorder == null)
+		if (player == null)
 		{
 			System.out.print("PLAYERISNULL");
 		}
@@ -225,37 +245,14 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
-	/**
-	 * This function is called periodically during test mode.
-	 */
+	
 	@Override
 	public void teleopInit() {
 		
-		if(player != null)
-		{
-			player.end(input);
-		}
+		System.out.println("Teleop Initializing...");	
 		
-		AutoRecord recorder = null;
-        try {
-			recorder = new AutoRecord();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-        
-        try 
-    	{
-    		if(recorder != null)
-    		{
-    			recorder.end();
-    		}
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+		System.out.println("Teleop Initialization Complete");
+       
 		
 
 	}
@@ -268,11 +265,19 @@ public class Robot extends IterativeRobot {
 		
 		
 		controller1.update();
-		controller2.update();
+		controller2.update(); 
 		movement.update();
 		lift.update();
 		grab.update();
 		
+		AutoRecord recorder = null;
+        try {
+			recorder = new AutoRecord();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		if (controller1.getButton("record"))
 		{
@@ -286,8 +291,8 @@ public class Robot extends IterativeRobot {
 				
 				if(recorder != null)
 				{
-					System.out.println(input.getLift1());
-					recorder.record(input);
+					System.out.println(lift.getLift1());
+					recorder.record(movement, lift, grab);
 				}
 			
 			}
@@ -298,6 +303,18 @@ public class Robot extends IterativeRobot {
 			
 			
 		}
+		
+		 try 
+	    	{
+	    		if(recorder != null)
+	    		{
+	    			recorder.end();
+	    		}
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
 		
 		if (recorder == null)
 		{
@@ -323,7 +340,7 @@ public class Robot extends IterativeRobot {
 		
 		if(player!= null)
 		{
-			player.end(input);
+			player.end(movement, lift, grab);
 		}
 		
 		

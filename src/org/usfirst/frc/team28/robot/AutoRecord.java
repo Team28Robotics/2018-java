@@ -21,22 +21,22 @@ public class AutoRecord {
 		}
 		
 
-		public void record(Input input) throws IOException
+		public void record(Movement move, Lift lift, Grab grab) throws IOException
 		{
 			if(writer != null)
 			{
 				
 			writer.append("" + (System.currentTimeMillis()-startTime));
 			
-			writer.append("," + input.getFrontLeft());
-			writer.append("," + input.getFrontRight());
-			writer.append("," + input.getBackLeft());
-			writer.append("," + input.getBackRight());
+			writer.append("," + move.getFrontLeft());
+			writer.append("," + move.getFrontRight());
+			writer.append("," + move.getBackLeft());
+			writer.append("," + move.getBackRight());
 			
-			writer.append("," + input.getLift1());
-			writer.append("," + input.getLift2());
+			writer.append("," + lift.getLift1());
+			writer.append("," + lift.getLift2());
 
-			writer.append("," + input.getIntake());
+			writer.append("," + grab.getIntake());
 			
 			
 			
@@ -45,7 +45,7 @@ public class AutoRecord {
 			 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
 			 */ 
 			
-			writer.append("," + input.getClaw() + "\n");
+			writer.append("," + grab.getClaw() + "\n");
 			
 			/*
 			 * CAREFUL. KEEP THE LAST THING YOU RECORD BETWEEN THESE TWO COMMENTS AS A
