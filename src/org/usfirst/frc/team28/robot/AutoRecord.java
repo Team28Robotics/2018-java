@@ -12,12 +12,12 @@ public class AutoRecord {
 		
 		long startTime;
 		
-		public AutoRecord() throws IOException
+		public AutoRecord(String autoFile) throws IOException
 		{
 
 				startTime = System.currentTimeMillis();
 				
-				writer = new FileWriter(Robot.autoFile);
+				writer = new FileWriter(autoFile);
 		}
 		
 

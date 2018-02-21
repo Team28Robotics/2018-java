@@ -12,14 +12,16 @@ public class AutoPlay {
 	boolean onTime = true;
 	double nextDouble;
 	
-	public AutoPlay() throws FileNotFoundException
+	public AutoPlay(String autoFile) throws FileNotFoundException
 	{
-		scanner = new Scanner(new File(Robot.autoFile));
+		scanner = new Scanner(new File(autoFile));
 		
 		scanner.useDelimiter(",|\\n");
 		
 		startTime = System.currentTimeMillis();	
 	}
+	
+	
 	
 	public void play(Movement move, Lift lift, Grab grab)
 	{

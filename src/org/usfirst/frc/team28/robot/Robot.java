@@ -40,9 +40,11 @@ public class Robot extends IterativeRobot {
 	
 	boolean isRecording = false;
 	
-	static final int autoNumber = 10;
+//	static final int autoNumber = (int) SmartDashboard.getNumber("Auto Number", 0);
+//	static final String autoFile = new String("/home/lvuser/AutoFiles" + autoNumber + ".csv");
 	
-	static final String autoFile = new String("/home/lvuser/AutoFiles" + autoNumber + ".csv");
+	int autoNumber;
+	String autoFile;
 	
 	AutoPlay player;
 	AutoRecord recorder;
@@ -76,8 +78,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto Modes", mode);
 		
 		System.out.println("Initializing Camera...");
-		CameraServer.getInstance().startAutomaticCapture();
-		
+		CameraServer.getInstance().startAutomaticCapture();		
 		System.out.println("Camera Initialized");
 		
 		System.out.println("Initializing Objects...");
@@ -100,6 +101,10 @@ public class Robot extends IterativeRobot {
 		System.out.println("Done.");
 		
 		auto = new Auto();
+		
+		autoNumber = (int) SmartDashboard.getNumber("Auto Number", 0);
+		autoFile = new String("/home/lvuser/AutoFiles" + autoNumber + ".csv");
+		
 		System.out.println("Robot Initialization Complete");
 		
 		
@@ -135,6 +140,32 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putString("Game Data", gameData);
 		SmartDashboard.putString("Position", m_autoSelected);
+		
+		try 
+    	{
+    		if(recorder != null)
+    		{
+    			recorder.end();
+    			System.out.println("Recorder Flushed");
+    		}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		player = null;
+    	
+    	
+    	try 
+    	{
+    		 player = new AutoPlay(autoFile);
+		} 
+    	
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 		
 		System.out.println("Autonomous Initializion Complete");
     	
@@ -208,6 +239,9 @@ public class Robot extends IterativeRobot {
 				
 			case kCross:
 				auto.cross();
+				movement.seek();
+				player.play(movement, lift, grab);
+
 				break;
 				
 			
@@ -216,27 +250,17 @@ public class Robot extends IterativeRobot {
 	
 	case kExperimental:
 		
-		player = null;
-    	
-    	
-    	try 
-    	{
-    		 player = new AutoPlay();
-		} 
-    	
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		
     	
 		if (player != null)
 		{
+			System.out.println("Playing...");
 			player.play(movement, lift, grab);
 		}
 		
 		if (player == null)
 		{
-			System.out.print("PLAYERISNULL");
+			System.out.println("PLAYERISNULL");
 		}
 		
 		
@@ -250,6 +274,17 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		
 		System.out.println("Teleop Initializing...");	
+		
+		
+	
+		 recorder = null;
+        try {
+			recorder = new AutoRecord(autoFile);
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		System.out.println("Teleop Initialization Complete");
        
@@ -270,14 +305,7 @@ public class Robot extends IterativeRobot {
 		lift.update();
 		grab.update();
 		
-		AutoRecord recorder = null;
-        try {
-			recorder = new AutoRecord();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+		
 		
 		if (controller1.getButton("record"))
 		{
@@ -291,7 +319,7 @@ public class Robot extends IterativeRobot {
 				
 				if(recorder != null)
 				{
-					System.out.println(lift.getLift1());
+					System.out.println("Recording...");
 					recorder.record(movement, lift, grab);
 				}
 			
@@ -304,21 +332,10 @@ public class Robot extends IterativeRobot {
 			
 		}
 		
-		 try 
-	    	{
-	    		if(recorder != null)
-	    		{
-	    			recorder.end();
-	    		}
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		
+		 
 		if (recorder == null)
 		{
-			System.out.print("RECORDERNULL!");
+//			System.out.println("RECORDERNULL!");
 		}
 		    	
 		
@@ -338,10 +355,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		
-		if(player!= null)
-		{
-			player.end(movement, lift, grab);
-		}
 		
 		
 	
