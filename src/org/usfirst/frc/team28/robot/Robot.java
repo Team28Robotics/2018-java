@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot {
 	
 	AutoPlay player;
 	AutoRecord recorder;
-	Input input;
 	Movement movement;
 	Controller controller1;
 	Controller controller2;
@@ -56,7 +55,8 @@ public class Robot extends IterativeRobot {
 	Auto auto;
 	Grab grab;
 	CameraServer cam;
-	
+	Rotaion rotaion;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -89,7 +89,9 @@ public class Robot extends IterativeRobot {
 		System.out.println("Controllers Initialized");
 		
 		System.out.println("Initializing Drive Code...");
-		movement = new Movement(controller1);
+		rotaion = new Rotaion(PinConstants.GYRO_PIN);
+		movement = new Movement(controller1, rotaion);
+		movement.resetEncoder();
 		System.out.println("Done.");
 
 		System.out.println("Initializing Lift Code...");
@@ -105,7 +107,10 @@ public class Robot extends IterativeRobot {
 		autoNumber = (int) SmartDashboard.getNumber("Auto Number", 0);
 		autoFile = new String("/home/lvuser/AutoFiles" + autoNumber + ".csv");
 		
+		
 		System.out.println("Robot Initialization Complete");
+		
+		rotaion.gyroCalibrate();
 		
 		
 	}
@@ -126,7 +131,7 @@ public class Robot extends IterativeRobot {
 		
 		System.out.println("Autonomous Initializing...");	
 		
-		
+		rotaion.gyroReset();
 		
 		m_autoSelected = m_chooser.getSelected();
 		// autoS elected = SmartDashboard.getString("Auto Selector",
@@ -239,7 +244,6 @@ public class Robot extends IterativeRobot {
 				
 			case kCross:
 				auto.cross();
-				movement.seek();
 				player.play(movement, lift, grab);
 
 				break;
@@ -275,8 +279,8 @@ public class Robot extends IterativeRobot {
 		
 		System.out.println("Teleop Initializing...");	
 		
+		rotaion.gyroReset();
 		
-	
 		 recorder = null;
         try {
 			recorder = new AutoRecord(autoFile);

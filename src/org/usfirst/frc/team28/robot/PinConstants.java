@@ -3,7 +3,7 @@ package org.usfirst.frc.team28.robot;
 public class PinConstants {
 	
 	//ANALOG
-	public static final int GYRO_PIN = 0;
+	public static final int GYRO_PIN = 1;
 	
 	//CAN
 	public static final int FL_MOTOR = 3, FR_MOTOR = 4, BR_MOTOR = 2, BL_MOTOR = 1;

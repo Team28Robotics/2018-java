@@ -5,17 +5,16 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.*;;
+import edu.wpi.first.networktables.*;
 
 
 public class Movement {
 	
-	private TalonSRX bL = new TalonSRX(PinConstants.BL_MOTOR);
-	private TalonSRX bR = new TalonSRX(PinConstants.BR_MOTOR);
-	private TalonSRX fL = new TalonSRX(PinConstants.FL_MOTOR);
-	private TalonSRX fR = new TalonSRX(PinConstants.FR_MOTOR);
+	private WPI_TalonSRX bL = new WPI_TalonSRX(PinConstants.BL_MOTOR);
+	private WPI_TalonSRX bR = new WPI_TalonSRX(PinConstants.BR_MOTOR);
+	private WPI_TalonSRX fL = new WPI_TalonSRX(PinConstants.FL_MOTOR);
+	private WPI_TalonSRX fR = new WPI_TalonSRX(PinConstants.FR_MOTOR);
 	
-	private Rotaion rotaion = new Rotaion(PinConstants.GYRO_PIN);
 	
 	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	
@@ -40,9 +39,11 @@ public class Movement {
 	
 	
 	Controller controller;
+	Rotaion rotaion;
 	
-	public Movement(Controller newController){
+	public Movement(Controller newController, Rotaion newRotaion){
 		controller = newController;
+		rotaion = newRotaion;
 	
 		
 	}
@@ -60,7 +61,7 @@ public class Movement {
 	
 	public double getFrontRight()
 	{
-		return (controller.getAxis("forward") + controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
+		return (controller.getAxis("forward") + controller.getAxis("right") + rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setFrontRight(double x)
@@ -70,17 +71,16 @@ public class Movement {
 	
 	public double getBackLeft()
 	{
-		return -1 * (-controller.getAxis("forward") - controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
+		return -1 * (controller.getAxis("forward") + controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setBackLeft(double x)
 	{
 		bL.set(ControlMode.PercentOutput, x);
 	}
-	
 	public double getBackRight()
 	{
-		return (-controller.getAxis("forward") + controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
+		return (controller.getAxis("forward") - controller.getAxis("right") + rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setBackRight(double x)
@@ -88,11 +88,66 @@ public class Movement {
 		bR.set(ControlMode.PercentOutput, x);
 	}
 	
- 	public void update(){
+ 	public void resetEncoder()
+ 	{
+ 		bL.getSensorCollection().setQuadraturePosition(0, 0);
+ 		bR.getSensorCollection().setQuadraturePosition(0, 0);
+ 		fL.getSensorCollection().setQuadraturePosition(0, 0);
+ 		fR.getSensorCollection().setQuadraturePosition(0, 0);
+
  		
- 		this.setFrontRight(this.getFrontRight());
+ 	}
+ 	
+ 	public double getFLEncDist()
+ 	{
+ 		return fL.getSensorCollection().getQuadraturePosition();
+ 	}
+ 	
+ 	public double getFREncDist()
+ 	{
+ 		return fR.getSensorCollection().getQuadraturePosition();
+ 	}
+ 	
+ 	public double getBLEncDist()
+ 	{
+ 		return fL.getSensorCollection().getQuadraturePosition();
+ 	}
+ 	
+ 	public double getBREncDist()
+ 	{
+ 		return fL.getSensorCollection().getQuadraturePosition();
+ 	}
+ 	
+ 	public double getFLEncRate()
+ 	{
+ 		return fL.getSensorCollection().getQuadratureVelocity();
+ 	}
+ 	
+ 	public double getFREncRate()
+ 	{
+ 		return fR.getSensorCollection().getQuadratureVelocity();
+ 	}
+ 	
+ 	public double getBLEncRate()
+ 	{
+ 		return fL.getSensorCollection().getQuadratureVelocity();
+ 	}
+ 	
+ 	public double getBREncRate()
+ 	{
+ 		return fL.getSensorCollection().getQuadratureVelocity();
+ 	}
+ 	
+	
+	public void update(){
+ 		
+ 		rotaion.reset();
+ 		
+// 		this.setFrontRight(this.getFrontRight());
+ 		
+ 		this.setFrontRight(mirror(this.getFLEncRate(), this.getBLEncRate(), this.getFrontRight()));
  		this.setFrontLeft(this.getFrontLeft());
- 		this.setBackRight(-this.getBackRight());
+ 		this.setBackRight(this.getBackRight());
  		this.setBackLeft(this.getBackLeft());
  		
  		SmartDashboard.putNumber("forward", controller.getAxis("forward"));
@@ -103,28 +158,87 @@ public class Movement {
     	SmartDashboard.putNumber("FL Input", this.getFrontLeft());
     	SmartDashboard.putNumber("BR Input", this.getBackRight());
     	SmartDashboard.putNumber("BL Input", this.getBackLeft());
-
+    	
+    	double FLEncoderDist = this.getFLEncDist();
+    	double FREncoderDist = this.getFREncDist();
+    	double BLEncoderDist = this.getBLEncDist();
+    	double BREncoderDist = this.getBREncDist();
+    	
+    	SmartDashboard.putNumber("Front Left Encoder Distance", FLEncoderDist);
+    	SmartDashboard.putNumber("Front Right Encoder Distance", FREncoderDist);
+    	SmartDashboard.putNumber("Back Left Encoder Distance", BLEncoderDist);
+    	SmartDashboard.putNumber("Back Right Encoder Distance", BREncoderDist);
+    	
+    	double FLEncoderRate = this.getFLEncRate();
+    	double FREncoderRate = this.getFREncRate();
+    	double BLEncoderRate = this.getBLEncRate();
+    	double BREncoderRate = this.getBREncRate();
+    	
+    	SmartDashboard.putNumber("Front Left Encoder Rate", FLEncoderRate);
+    	SmartDashboard.putNumber("Front Right Encoder Rate", FREncoderRate);
+    	SmartDashboard.putNumber("Back Left Encoder Rate", BLEncoderRate);
+    	SmartDashboard.putNumber("Back Right Encoder Rate", BREncoderRate);
+    	
+    	
+    	
+//    	System.out.println(bR.getSensorCollection().getAnalogInRaw());
+    	
+    	rotaion.display();
+    	
+    	
+    	
+    	
+    	    	
  	}
  	
- 	public void seek()
+ 	public double mirror(double sensor, double mirror, double currentInput)
  	{
-// 		if (v == 0)
-// 		{
-// 			turnAdjust = 0.3;
-// 		}
-// 		
-// 		else
-// 		{
-// 			 error = x;
-// 			 turnAdjust = kP * x;
-// 	}
-// 			
-// 		 += turnAdjust;
-// 		
-// 		this.setFrontRight(x);
-// 		this.setFrontLeft(x);
-// 		this.setBackRight(x);
-// 		this.setBackLeft(x);
+ 		double newInput = 0;
+ 		double add = 0.0001;
+ 		
+ 		
+ 		
+ 		while(sensor > mirror)
+ 		{
+ 			if(currentInput < 1)
+ 				newInput = currentInput + add;
+ 			else
+ 				newInput = currentInput - add;
+ 		}
+ 		
+ 		while(sensor < mirror)
+ 		{
+ 			if(currentInput < 1)
+ 				newInput = currentInput - add;
+ 			else
+ 				newInput = currentInput + add;
+ 		}
+ 		
+ 		
+        Util.coerce2Range(newInput, -1, 1);
+ 		
+ 		
+ 		return newInput;
  	}
  	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
