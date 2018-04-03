@@ -28,10 +28,10 @@ public class AutoRecord {
 				
 			writer.append("" + (System.currentTimeMillis()-startTime));
 			
-			writer.append("," + move.getFrontLeft());
-			writer.append("," + move.getFrontRight());
-			writer.append("," + move.getBackLeft());
-			writer.append("," + move.getBackRight());
+			writer.append("," + move.getFLEncRate());
+			writer.append("," + move.getFREncRate());
+			writer.append("," + move.getBLEncRate());
+			writer.append("," + move.getBREncRate());
 			
 			writer.append("," + lift.getLift1());
 			writer.append("," + lift.getLift2());

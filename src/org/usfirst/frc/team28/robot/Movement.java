@@ -49,9 +49,18 @@ public class Movement {
 	}
 	
 	
+	public void manualGyroReset()
+	{
+		if(controller.getButton("resetGyro"))
+		{
+			rotaion.gyroReset();
+		}
+	}
+	
 	public double getFrontLeft()
 	{
 		return -1 * (controller.getAxis("forward") - controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
+//		return -1 * (controller.getAxis("forward") - controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight"))); 
 	}
 	
 	public void setFrontLeft(double x)
@@ -62,6 +71,7 @@ public class Movement {
 	public double getFrontRight()
 	{
 		return (controller.getAxis("forward") + controller.getAxis("right") + rotaion.update(controller.getAxis("turnRight")));
+//		return (controller.getAxis("forward") + controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setFrontRight(double x)
@@ -72,6 +82,7 @@ public class Movement {
 	public double getBackLeft()
 	{
 		return -1 * (controller.getAxis("forward") + controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
+//		return -1 * (-controller.getAxis("forward") - controller.getAxis("right") - rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setBackLeft(double x)
@@ -81,6 +92,7 @@ public class Movement {
 	public double getBackRight()
 	{
 		return (controller.getAxis("forward") - controller.getAxis("right") + rotaion.update(controller.getAxis("turnRight")));
+//		return (controller.getAxis("forward") - controller.getAxis("right") + rotaion.update(controller.getAxis("turnRight")));
 	}
 	
 	public void setBackRight(double x)
@@ -88,14 +100,33 @@ public class Movement {
 		bR.set(ControlMode.PercentOutput, x);
 	}
 	
+	public void setAll(double x)
+	{
+		setFrontLeft(x);
+		setFrontRight(x);
+		setBackLeft(x);
+		setBackRight(x);
+	}
+	
+	public void setRight(double x)
+	{
+		setFrontRight(x);
+		setBackRight(x);
+	}
+	
+	
+	public void setLeft(double x)
+	{
+		setFrontLeft(x);
+		setBackLeft(x);
+	}
+	
  	public void resetEncoder()
  	{
  		bL.getSensorCollection().setQuadraturePosition(0, 0);
  		bR.getSensorCollection().setQuadraturePosition(0, 0);
  		fL.getSensorCollection().setQuadraturePosition(0, 0);
- 		fR.getSensorCollection().setQuadraturePosition(0, 0);
-
- 		
+ 		fR.getSensorCollection().setQuadraturePosition(0, 0);	
  	}
  	
  	public double getFLEncDist()
@@ -143,9 +174,10 @@ public class Movement {
  		
  		rotaion.reset();
  		
-// 		this.setFrontRight(this.getFrontRight());
  		
- 		this.setFrontRight(mirror(this.getFLEncRate(), this.getBLEncRate(), this.getFrontRight()));
+ 		manualGyroReset();
+ 		
+ 		this.setFrontRight(this.getFrontRight());
  		this.setFrontLeft(this.getFrontLeft());
  		this.setBackRight(this.getBackRight());
  		this.setBackLeft(this.getBackLeft());
@@ -179,10 +211,7 @@ public class Movement {
     	SmartDashboard.putNumber("Back Left Encoder Rate", BLEncoderRate);
     	SmartDashboard.putNumber("Back Right Encoder Rate", BREncoderRate);
     	
-    	
-    	
-//    	System.out.println(bR.getSensorCollection().getAnalogInRaw());
-    	
+    	    	
     	rotaion.display();
     	
     	
@@ -191,37 +220,10 @@ public class Movement {
     	    	
  	}
  	
- 	public double mirror(double sensor, double mirror, double currentInput)
- 	{
- 		double newInput = 0;
- 		double add = 0.0001;
- 		
- 		
- 		
- 		while(sensor > mirror)
- 		{
- 			if(currentInput < 1)
- 				newInput = currentInput + add;
- 			else
- 				newInput = currentInput - add;
- 		}
- 		
- 		while(sensor < mirror)
- 		{
- 			if(currentInput < 1)
- 				newInput = currentInput - add;
- 			else
- 				newInput = currentInput + add;
- 		}
- 		
- 		
-        Util.coerce2Range(newInput, -1, 1);
- 		
- 		
- 		return newInput;
- 	}
+
  	
 }
+
 
 
 

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team28.robot;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -12,7 +10,7 @@ public class Rotaion{
 	private ADXRS450_Gyro gyro;
 	
 	
-	public Rotaion(int channel){
+	public Rotaion(){
 		gyro = new ADXRS450_Gyro();
 		header = gyro.getAngle();
 		pid = new PID(0, 0, 0, gyro.getAngle());

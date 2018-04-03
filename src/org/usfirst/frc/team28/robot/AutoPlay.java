@@ -39,6 +39,11 @@ public class AutoPlay {
 			if (t_delta <= 0)
 			{
 				
+				
+				
+				
+				
+				
 				move.setFrontLeft(scanner.nextDouble());
 				move.setFrontRight(scanner.nextDouble());
 				move.setBackLeft(scanner.nextDouble());

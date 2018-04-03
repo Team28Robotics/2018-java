@@ -15,6 +15,7 @@ public class Auto {
 	Movement move;
 	Lift lift;
 	Grab grab;
+	Commands c;
 	
 	public Auto()
 	{
@@ -84,7 +85,7 @@ public class Auto {
 	
 	public void cross()
 	{		
-		
+		c.driveDistance(1000, 0.3);
 	}
 	
 	public void defaultAuto()

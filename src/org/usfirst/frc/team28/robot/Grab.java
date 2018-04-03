@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Grab {
 	
 	private Spark claw = new Spark(PinConstants.CLAW);
-	private Spark intake1 = new Spark(PinConstants.INTAKE_1);
-	private Spark intake2 = new Spark(PinConstants.INTAKE_2);
+	private Spark intake1 = new Spark(PinConstants.INTAKE_R);
+	private Spark intake2 = new Spark(PinConstants.INTAKE_L);
 	private Controller controller;
 		
 	public Grab(Controller newController){

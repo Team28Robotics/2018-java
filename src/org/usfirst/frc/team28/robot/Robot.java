@@ -89,7 +89,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("Controllers Initialized");
 		
 		System.out.println("Initializing Drive Code...");
-		rotaion = new Rotaion(PinConstants.GYRO_PIN);
+		rotaion = new Rotaion();
 		movement = new Movement(controller1, rotaion);
 		movement.resetEncoder();
 		System.out.println("Done.");

@@ -32,6 +32,8 @@ public class Controller {
 		
 		buttonMap.put("slow", Controller1.getBumper(GenericHID.Hand.kRight));
 		buttonMap.put("record", Controller1.getBumper(GenericHID.Hand.kLeft));
+		buttonMap.put("resetGyro", Controller1.getXButton());
+
 
 
 
